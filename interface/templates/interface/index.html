@@ -1,0 +1,18 @@
+{% extends 'interface/base.html'%}
+{% block content %}
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Главная</h1>
+        <p class="lead text-muted">С помощью нашего сервиса вы можете организовать авторизацию клиентов через СМС</p>
+        <div class="col-6">
+            <div class="card" style="width: 36rem;">
+                <div class="card-header"><h5>Статистика нашего сайта</h5></div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Количество клиентов, которые уже пользуются нашим сервисом- {{all_clients}}</li>
+                    <li class="list-group-item">Количество использованных инвайт-кодов - {{all_invite_inputs}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
