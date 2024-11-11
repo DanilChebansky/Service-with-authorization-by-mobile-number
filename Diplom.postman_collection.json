@@ -9,12 +9,15 @@
 	"item": [
 		{
 			"name": "User Create or Login",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone\": \"79000000000\"\r\n}",
+					"raw": "{\r\n    \"phone\": \"79321225043\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,13 +47,7 @@
 			"name": "User Delete",
 			"request": {
 				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxMjQ1MTQ1LCJpYXQiOjE3MzExNTg3NDUsImp0aSI6IjZiMTY5OWI4ZDJlZjQzOTQ5YjFiMzIwMzMzMWYzODgzIiwidXNlcl9pZCI6M30.bTyZO2gvJTDqHBNS5iXZRGrEd8M_zcYWCSQjSAUaMVM",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n   \"invite_code\": \"12Hk1p\"\r\n}",
@@ -81,13 +78,13 @@
 			"response": []
 		},
 		{
-			"name": "Token",
+			"name": "Confirm",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone\": \"79000000000\",\r\n    \"password\": \"7333\"\r\n}",
+					"raw": "{\r\n    \"phone\": \"79321225043\",\r\n    \"sms\": \"3079\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -95,7 +92,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/users/token/",
+					"raw": "http://127.0.0.1:8000/users/login/confirm/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -106,7 +103,8 @@
 					"port": "8000",
 					"path": [
 						"users",
-						"token",
+						"login",
+						"confirm",
 						""
 					]
 				}
@@ -120,13 +118,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxMjQ0ODI2LCJpYXQiOjE3MzExNTg0MjYsImp0aSI6ImUyOTkxNDNhNGI2ZDQ5OGZiYTc3YjIwMzBhZmZmYTk2IiwidXNlcl9pZCI6Mn0.j4ok0ErQwQN0435uTFMJHUEIkNM9fNwH99c0RO56Y5Q",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n   \"invite_code\": \"12Hk1p\"\r\n}",
@@ -162,13 +154,7 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxMjQ1MTQ1LCJpYXQiOjE3MzExNTg3NDUsImp0aSI6IjZiMTY5OWI4ZDJlZjQzOTQ5YjFiMzIwMzMzMWYzODgzIiwidXNlcl9pZCI6M30.bTyZO2gvJTDqHBNS5iXZRGrEd8M_zcYWCSQjSAUaMVM",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n   \"invite_code\": \"12Hk1p\"\r\n}",
@@ -190,6 +176,40 @@
 					"port": "8000",
 					"path": [
 						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User (need authorithation as self.user or superuser)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"invite_input\": \"12Hk1p\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/users/4/update/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"4",
+						"update",
 						""
 					]
 				}
