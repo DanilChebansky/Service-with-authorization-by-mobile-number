@@ -19,6 +19,9 @@ class User(AbstractUser):
     city = models.CharField(
         max_length=100, verbose_name="Город", **NULLABLE, help_text="Введите город"
     )
+    sms = models.CharField(
+        max_length=4, verbose_name="Одноразовый СМС-код", **NULLABLE
+    )
     invite_code = models.CharField(max_length=6, verbose_name="Инвайт-код", **NULLABLE)
     invite_input = models.CharField(
         max_length=6,
