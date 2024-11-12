@@ -64,25 +64,10 @@ class UserConfirmAPIView(generics.GenericAPIView):
         return Response(return_data, status=status.HTTP_200_OK)
 
 
-class UserUpdateAPIView(APIView):
-    """Редактирует информацию о пользователе"""
-
+class UserUpdateAPIView(generics.GenericAPIView):
     queryset = User.objects.all()
-    serializer_class = UserUpdateSerializer
+    serializer_class = UserConfirmSerializer
     permission_classes = [IsAuthenticated, IsSelfUser | IsAdminUser]
-
-    def patch(self, request):
-        user = self.request.user
-        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_205_RESET_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # def get_permissions(self):
-    #     self.permission_classes = [IsAuthenticated, IsSelfUser | IsAdminUser]
-    #     return [permission() for permission in self.permission_classes]
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):
@@ -91,6 +76,14 @@ class UserProfileAPIView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated, IsSelfUser | IsAdminUser]
+
+    def put(self, request, *args, **kwargs):
+        user = self.get_object()  # Получаем пользователя
+        serializer = self.get_serializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserListAPIView(generics.ListAPIView):
