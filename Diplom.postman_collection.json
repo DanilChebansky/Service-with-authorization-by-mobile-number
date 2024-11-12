@@ -25,13 +25,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/users/login/",
+					"raw": "http://localhost:8000/users/login/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -45,9 +42,28 @@
 		},
 		{
 			"name": "User Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var xsrfCookie = postman.getResponseCookie(\"csrftoken\");\r",
+							"postman.setEnvironmentVariable('csrftoken', xsrfCookie.value);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "it8tqpOjMvnzhZ5g7IO52AJqimHleTkY",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n   \"invite_code\": \"12Hk1p\"\r\n}",
@@ -58,18 +74,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/users/5/delete/",
+					"raw": "http://localhost:8000/users/7/delete/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"users",
-						"5",
+						"7",
 						"delete",
 						""
 					]
@@ -84,7 +97,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone\": \"79321225043\",\r\n    \"sms\": \"3079\"\r\n}",
+					"raw": "{\r\n    \"phone\": \"79321225043\",\r\n    \"sms\": \"5641\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -92,13 +105,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/users/login/confirm/",
+					"raw": "http://localhost:8000/users/login/confirm/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -129,18 +139,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/users/1/",
+					"raw": "http://localhost:8000/users/6/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"users",
-						"1",
+						"6",
 						""
 					]
 				}
@@ -165,13 +172,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/users/",
+					"raw": "http://localhost:8000/users/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -184,12 +188,31 @@
 		},
 		{
 			"name": "Update User (need authorithation as self.user or superuser)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var xsrfCookie = postman.getResponseCookie(\"csrftoken\");\r",
+							"postman.setEnvironmentVariable('csrftoken', xsrfCookie.value);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "PATCH",
-				"header": [],
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "10MO0dH52NDocqF7ZLW0gvNOZm8pdBBw",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"invite_input\": \"12Hk1p\"\r\n}",
+					"raw": "{\r\n    \"phone\": \"79000000003\",\r\n    \"invite_input\": \"26Ru2z\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -197,24 +220,46 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/users/4/update/",
+					"raw": "http://localhost:8000/users/6/update/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
 						"users",
-						"4",
+						"6",
 						"update",
 						""
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

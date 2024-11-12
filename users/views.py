@@ -25,6 +25,10 @@ class UserRegisterAPIView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         return_data = {}
+        if not request.data.get('phone'):
+            return_data["message"] = 'Вы не ввели номер телефона'
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             serializer.is_valid(raise_exception=True)
             user = serializer.save(is_active=True)
@@ -64,10 +68,18 @@ class UserConfirmAPIView(generics.GenericAPIView):
         return Response(return_data, status=status.HTTP_200_OK)
 
 
-class UserUpdateAPIView(generics.GenericAPIView):
+class UserUpdateAPIView(generics.UpdateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserConfirmSerializer
-    permission_classes = [IsAuthenticated, IsSelfUser | IsAdminUser]
+    serializer_class = UserUpdateSerializer
+    permission_classes = [IsAuthenticated, IsSelfUser]
+
+    # def patch(self, request, *args, **kwargs):
+    #     user = self.get_object()  # Получаем пользователя
+    #     serializer = self.get_serializer(user, data=request.data, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):
@@ -76,14 +88,6 @@ class UserProfileAPIView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated, IsSelfUser | IsAdminUser]
-
-    def put(self, request, *args, **kwargs):
-        user = self.get_object()  # Получаем пользователя
-        serializer = self.get_serializer(user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserListAPIView(generics.ListAPIView):
