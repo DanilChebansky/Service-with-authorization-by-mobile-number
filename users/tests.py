@@ -72,7 +72,7 @@ class UserTest(APITestCase):
                 "city": self.user.city,
                 "invite_code": self.user.invite_code,
                 "invite_input": self.user.invite_input,
-                "invitation_list": [self.user1.phone],
+                "invitation_list": [{"id": self.user1.pk, "phone": self.user1.phone}],
             },
             {
                 "id": self.user1.pk,
