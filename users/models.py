@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from users.validators import phone_validator
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -11,7 +10,6 @@ class User(AbstractUser):
     email = models.EmailField(verbose_name="Email", **NULLABLE)
     phone = models.CharField(
         unique=True,
-        validators=[phone_validator],
         max_length=11,
         verbose_name="Телефон",
         help_text="Введите номер телефона",

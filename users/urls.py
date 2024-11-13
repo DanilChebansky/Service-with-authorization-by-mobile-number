@@ -10,10 +10,13 @@ from users.views import (
     UserDestroyAPIView,
 )
 
+from rest_framework import urls
+from django.contrib.auth.views import LogoutView
 app_name = UsersConfig.name
 
 urlpatterns = [
     path("login/confirm/", UserConfirmAPIView.as_view(), name="confirm"),
+    path("logout/", LogoutView.as_view(), name="logout"),
     path("", UserListAPIView.as_view(), name="user_list"),
     path("login/", UserRegisterAPIView.as_view(), name="login"),
     path("<int:pk>/", UserProfileAPIView.as_view(), name="user_detail"),

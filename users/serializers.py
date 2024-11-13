@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from users.models import User
 from users.serializer_validators import InviteInputValidator
+from users.validators import PhoneValidator
 
 
 class UserSerializer(ModelSerializer):
@@ -11,6 +12,8 @@ class UserSerializer(ModelSerializer):
             "id",
             "phone",
         )
+
+        validators = [PhoneValidator(phone="phone")]
 
 
 class UserUpdateSerializer(ModelSerializer):
