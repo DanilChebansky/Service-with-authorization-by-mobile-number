@@ -97,7 +97,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone\": \"79321225043\",\r\n    \"sms\": \"5641\"\r\n}",
+					"raw": "{\r\n    \"phone\": \"79321225043\",\r\n    \"sms\": \"6872\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -139,7 +139,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/users/6/",
+					"raw": "http://localhost:8000/users/1/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -147,7 +147,7 @@
 					"port": "8000",
 					"path": [
 						"users",
-						"6",
+						"1",
 						""
 					]
 				}
@@ -206,13 +206,13 @@
 				"header": [
 					{
 						"key": "X-CSRFToken",
-						"value": "10MO0dH52NDocqF7ZLW0gvNOZm8pdBBw",
+						"value": "HQSlNsa2jSeZ4xZ8cD5sC0PoeG1un1yr",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone\": \"79000000003\",\r\n    \"invite_input\": \"26Ru2z\"\r\n}",
+					"raw": "{\r\n    \"phone\": \"79000000000\",\r\n    \"invite_input\": \"26Ru2z\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -220,7 +220,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/users/6/update/",
+					"raw": "http://localhost:8000/users/1/update/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -228,8 +228,35 @@
 					"port": "8000",
 					"path": [
 						"users",
-						"6",
+						"1",
 						"update",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "tYR7u88kvx9pr8oyGhR5QJ4j5BzSR6eq",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/users/logout/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"logout",
 						""
 					]
 				}
