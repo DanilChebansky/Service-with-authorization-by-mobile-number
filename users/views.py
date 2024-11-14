@@ -25,10 +25,6 @@ class UserRegisterAPIView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        return_data = {}
-        if not request.data.get('phone'):
-            return_data["message"] = 'Вы не ввели номер телефона'
-            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
         serializer.fields['phone'].validators = [
             v for v in serializer.fields['phone'].validators
             if not isinstance(v, UniqueValidator)
@@ -40,11 +36,10 @@ class UserRegisterAPIView(generics.CreateAPIView):
                 'invite_code': create_invite_code()
             }
         )
-        password = random.randint(10000, 99999)
-        user.set_password(str(password))
         sms = random.randint(1000, 9999)
         user.sms = str(sms)
         user.save()
+
         time.sleep(3)
         print(sms)
 
@@ -58,8 +53,19 @@ class UserConfirmAPIView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         return_data = {}
-        user = User.objects.get(phone=request.data.get("phone"))
-        sms = request.data.get("sms")
+        if request.data.get("phone"):
+            user = User.objects.filter(phone=request.data.get("phone")).first()
+            if not user:
+                return_data['message'] = "Ошибка при вводе телефона. Введите верный номер"
+                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return_data['message'] = "Ошибка при вводе телефона. Введите верный номер"
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
+        if request.data.get("sms"):
+            sms = request.data.get("sms")
+        else:
+            return_data['message'] = "Введите код"
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
         if user.sms == sms:
             login(self.request, user)
             return_data['invite_code'] = user.invite_code
@@ -67,7 +73,8 @@ class UserConfirmAPIView(generics.GenericAPIView):
             user.sms = ''
             user.save()
         else:
-            return_data['message'] = "Код введен неправильно"
+            return_data['message'] = "Проверьте правильность ввода номера телефона и смс-кода"
+            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
         return Response(return_data, status=status.HTTP_200_OK)
 
 
