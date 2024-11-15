@@ -13,7 +13,8 @@ from users.serializers import UserSerializer, ProfileSerializer, UserConfirmSeri
 from users.models import User
 from users.services import create_invite_code
 
-from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import ValidationError
 
 
 class UserRegisterAPIView(generics.CreateAPIView):
@@ -52,44 +53,25 @@ class UserConfirmAPIView(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        return_data = {}
-        if request.data.get("phone"):
-            user = User.objects.filter(phone=request.data.get("phone")).first()
-            if not user:
-                return_data['message'] = "Ошибка при вводе телефона. Введите верный номер"
-                return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return_data['message'] = "Ошибка при вводе телефона. Введите верный номер"
-            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
-        if request.data.get("sms"):
-            sms = request.data.get("sms")
-        else:
-            return_data['message'] = "Введите код"
-            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
-        if user.sms == sms:
-            login(self.request, user)
-            return_data['invite_code'] = user.invite_code
-            return_data['message'] = "Вы успешно авторизованы"
-            user.sms = ''
-            user.save()
-        else:
-            return_data['message'] = "Проверьте правильность ввода номера телефона и смс-кода"
-            return Response(return_data, status=status.HTTP_400_BAD_REQUEST)
-        return Response(return_data, status=status.HTTP_200_OK)
+        serializer = UserConfirmSerializer(data=request.data)
+        serializer.fields['phone'].validators = [
+            v for v in serializer.fields['phone'].validators
+            if not isinstance(v, UniqueValidator)
+        ]
+        serializer.is_valid(raise_exception=True)
+
+        user = get_object_or_404(User, phone=serializer.validated_data['phone'])
+        if user.sms != serializer.validated_data['sms']:
+            raise ValidationError({'sms': 'Неправильный смс-код'})
+
+        login(self.request, user)
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
 
 class UserUpdateAPIView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated, IsSelfUser]
-
-    # def patch(self, request, *args, **kwargs):
-    #     user = self.get_object()  # Получаем пользователя
-    #     serializer = self.get_serializer(user, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserProfileAPIView(generics.RetrieveAPIView):

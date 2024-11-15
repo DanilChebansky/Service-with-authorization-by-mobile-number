@@ -12,6 +12,7 @@ from django.views.generic import (
     UpdateView,
     TemplateView,
     ListView,
+    FormView
 )
 from rest_framework.reverse import reverse_lazy, reverse
 

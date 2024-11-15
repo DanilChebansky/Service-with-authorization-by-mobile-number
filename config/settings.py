@@ -154,7 +154,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 AUTH_USER_MODEL = "users.User"
 
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/interface/"
+LOGOUT_REDIRECT_URL = "/"
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",

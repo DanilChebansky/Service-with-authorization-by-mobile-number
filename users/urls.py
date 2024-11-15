@@ -10,7 +10,6 @@ from users.views import (
     UserDestroyAPIView,
 )
 
-from rest_framework import urls
 from django.contrib.auth.views import LogoutView
 app_name = UsersConfig.name
 

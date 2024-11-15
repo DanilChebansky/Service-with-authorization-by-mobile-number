@@ -39,6 +39,7 @@ class UserConfirmSerializer(ModelSerializer):
             "phone",
             "sms",
         )
+        extra_kwargs = {'sms': {'required': True}}
 
 
 class ProfileSerializer(ModelSerializer):

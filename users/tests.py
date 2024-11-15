@@ -1,9 +1,12 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+from rest_framework.exceptions import ErrorDetail
 
 from users.models import User
 from users.services import create_invite_code
+
+import random
 
 
 class UserTest(APITestCase):
@@ -86,3 +89,35 @@ class UserTest(APITestCase):
         ]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data, result)
+
+
+class UserConfirmEmailCode(APITestCase):
+    url = reverse('users:confirm')
+    phone_number = '79212345678'
+    sms_code = str(random.randint(1000, 9999))
+
+    def setUp(self):
+        self.user = User.objects.create(phone=self.phone_number, invite_code='q1w2E3', sms=self.sms_code)
+
+    def test_failed_if_sms_not_set(self):
+        response = self.client.post(self.url, {'phone': self.phone_number})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertDictEqual(response.data, {'sms': [ErrorDetail(string='Обязательное поле.', code='required')]})
+
+    def test_phone_not_found(self):
+        response = self.client.post(self.url, {'phone': '79220000000', 'sms': self.sms_code})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_invalid_sms_code(self):
+        response = self.client.post(self.url, {'phone': self.phone_number, 'sms': '0000'})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertDictEqual(response.data, {'sms': ErrorDetail(string='Неправильный смс-код', code='invalid')})
+
+    def test_login_on_site_if_sms_is_valid(self):
+        response = self.client.post(self.url, {'phone': self.phone_number, 'sms': self.sms_code})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertDictEqual(response.data, {'id': self.user.id, 'phone': self.phone_number})
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
